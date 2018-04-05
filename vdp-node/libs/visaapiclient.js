@@ -80,9 +80,9 @@ VisaAPIClient.prototype.doXPayRequest = function(baseUri, resourcePath, queryPar
 		headers['Content-Type'] = 'application/json';
 	}
 	
-	headers['Accept'] = 'application/json';
+	// headers['Accept'] = 'application/json';
 	headers['x-pay-token'] = getXPayToken(resourcePath, queryParams, requestBody);
-	headers['ex-correlation-id'] = randomstring.generate({length:12, charset: 'alphanumeric'}) + '_SC'
+	headers['ex-correlation-id'] = randomstring.generate({length:12, charset: 'alphanumeric'}) + '_SC';
 	request({
 		uri : config.visaUrl + baseUri + resourcePath + '?' + queryParams,
 		method : methodType,
@@ -91,7 +91,7 @@ VisaAPIClient.prototype.doXPayRequest = function(baseUri, resourcePath, queryPar
 	}, function(error, response, body) {
 		if (!error) {
 			logResponseBody(response, body);
-			callback(null, response.statusCode);
+			callback(null, response.statusCode, JSON.parse(body));
 		} else {
 			console.log(error);
 			callback(error);
